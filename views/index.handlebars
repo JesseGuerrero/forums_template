@@ -1,0 +1,24 @@
+
+<form onsubmit="return false">
+    <input type="text" id="userlogin" name="userlogin" placeholder="Username" size="15">
+    <input type="text" id="password" name="password" placeholder="Password" size="15">
+    <input type="submit" value="Login" onclick="login()">
+    <input type="submit" value="Create Account" onclick="create_user()">
+</form>
+
+<textarea readonly id="chatbox" name="chatbox" rows="5" cols="61" style="overflow-y: scroll; resize:none;">{{ chat }}</textarea><br><br>
+<form onsubmit="return false">
+    <label for="username">Name:</label>
+    <input type="text" id="username" name="username" size="15"><br><br>
+    <input type="text" id="text-input" name="text-input" placeholder="Enter chat text" size="60"><br><br>
+    <input type="submit" value="Post" onclick="postText()">
+</form>
+<div id="create_account_prompt">
+
+</div>
+
+<footer>
+    <script type="text/javascript" src="/JS/client-general.js"></script>
+    <script type="text/javascript" src="/login.js"></script>
+    <script type="text/javascript" src="/chatbox.js"></script>
+</footer>
