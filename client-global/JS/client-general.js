@@ -1,6 +1,6 @@
-function sendJSONToServer(json) {
+function postJSONToRoute(url, json) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", '/', true);
+    xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(json));
 }

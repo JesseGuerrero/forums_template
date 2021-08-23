@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 function hash(string) {
     var letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -22,5 +24,11 @@ function decodeHash(string) {
     return result
 }
 
+function getChat() {
+    var chatString = fs.readFileSync('shoutbox/chat.txt', 'utf8')
+    return chatString.toString().replace(/\n*$/, "")
+}
+
 module.exports.hash = hash;
 module.exports.decodeHash = decodeHash;
+module.exports.getChat = getChat;

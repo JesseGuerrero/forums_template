@@ -43,7 +43,7 @@ function postText() {
             + ": " + input.value
         chatbox.value =
             (chatbox.value == "" ? "" : chatbox.value + "\n") + newText;
-        sendJSONToServer({'shoutbox':newText})
+        postJSONToRoute('/shoutbox', {'shoutbox':newText})
         removeExcessChat()
         scrollChatToBottom()
     }

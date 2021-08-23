@@ -4,11 +4,11 @@ let password = document.getElementById("password");
 let account_prompt = document.getElementById("create_account_prompt");
 
 function login() {
-    sendJSONToServer({'login':{'username':username.value, 'password':password.value}})
+    postJSONToRoute('/login', {'login':{'username':username.value, 'password':password.value}})
 }
 
 function create_user() {
-    sendJSONToServer({'create_user':{'username':username.value, 'password':password.value, 'verified':false}})
+    postJSONToRoute('/login', {'create_user':{'username':username.value, 'password':password.value, 'verified':false}})
     showCreationDisplay()
 }
 
