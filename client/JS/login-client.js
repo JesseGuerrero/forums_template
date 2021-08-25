@@ -8,7 +8,7 @@ function login() {
 }
 
 function create_user() {
-    postJSONToRoute('/login', {'create_user':{'username':username.value, 'password':password.value, 'verified':false}})
+    postJSONToRoute('/create-user', {'account':{'username':username.value, 'password':password.value, 'verified':false}})
     showCreationDisplay()
 }
 

@@ -28,3 +28,7 @@ function decodeHash(string) {
             result = result + str_char
     return result
 }
+
+function goToPage(url) {
+    window.location.href = url
+}

@@ -7,7 +7,7 @@ module.exports = function(app) {
     app.set('view engine', 'handlebars')
 
     //Route files
-    require("./routes/login")(app)
-    require("./routes/shoutbox")(app)
+    require(appRoot + "/server/routes/route-login")(app)
+    require(appRoot + "/server/routes/route-shoutbox")(app)
 
 }

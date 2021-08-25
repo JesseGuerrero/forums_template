@@ -25,7 +25,7 @@ function decodeHash(string) {
 }
 
 function getChat() {
-    var chatString = fs.readFileSync('shoutbox/chat.txt', 'utf8')
+    var chatString = fs.readFileSync('server/data/chat.txt', 'utf8')
     return chatString.toString().replace(/\n*$/, "")
 }
 
