@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-11">
+        <textarea readonly id="chatbox" name="chatbox" rows="5" cols="60" style="overflow-y: scroll; resize:none; background-color: black; color:#B0B0B0;">{{ chat }}</textarea><br><br>
+    </div>
+</div>
+<div class="row">
+    <div class="col-11">
+        <form onsubmit="return false">
+            <input type="text" id="text-input" name="text-input" placeholder="Enter chat text" size="57" style="background-color: black; color:gray;"><br><br>
+            <input type="submit" value="Post" onclick="postText()">
+        </form>
+    </div>
+</div>
+<div class="thread container-fluid border-top border-bottom border-info pb-3">
+    <div class="header row">
+        <div class="col-1 offset-5 text-center">
+            <h3 class="">Thread#1</h3>
+        </div>
+        <div class="col-2 offset-4 mt-auto">
+            <button class="float-end">Create thread</button>
+        </div>
+    </div>
+        <div class="post row border-top border-bottom pb-3 pt-3">
+            <div class="col-1 border-end border-light">
+                <div class="text-center" style="margin:auto">
+                    <img src="default_avatar.png" class = "img-fluid image-thumbnail">
+                    <br>
+                    <span class="username">Guest</span>
+                </div>
+            </div>
+            <div class="col-11 border-end border-light">
+                this is a post message
+            </div>
+        </div>
+
+        <div class="footer row">
+            <div class="col-2 offset-10 mt-auto">
+                <button class="float-end">Create thread</button>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <h2>Post</h2>
+                <form>
+                    <textarea class="thread-reply" maxlength="750" style="min-height: 30vh; min-width: 100%; overflow-y: scroll; resize:none; background-color: black; color:#B0B0B0;"></textarea>
+                    <input class="float-end" type="submit">
+                </form>
+            </div>
+        </div>
+</div>
+
+<footer>
+    <script type="text/javascript" src="/JS/chatbox-client.js"></script>
+</footer>

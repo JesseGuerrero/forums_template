@@ -1,6 +1,5 @@
 let CHAT_HEIGHT = 10;
 let chatbox = document.getElementById("chatbox");
-let name = document.getElementById("username");
 let input = document.getElementById("text-input");
 
 removeExcessChat()
@@ -30,19 +29,12 @@ function postText() {
         input.value = ""
         return
     }
-    if(hasInvalidCharacters(name.value)) {
-        alert("Invalid name")
-        name.value = ""
-        return
-    }
 
     if(input.value != "") {
         var time_date = new Date();
         var time = (time_date.getHours() < 10 ? "0" + time_date.getHours() : time_date.getHours()) + ":" + (time_date.getMinutes() < 10 ? "0" + time_date.getMinutes() : time_date.getMinutes())
-        var newText = time + " " + (name.value == "" ? "Guest" : name.value)
-            + ": " + input.value
-        chatbox.value =
-            (chatbox.value == "" ? "" : chatbox.value + "\n") + newText;
+        var newText = time + " " + "Guest" + ": " + input.value
+        chatbox.value = (chatbox.value == "" ? "" : chatbox.value + "\n") + newText;
         postJSONToRoute('/shoutbox', {'shoutbox':newText})
         removeExcessChat()
         scrollChatToBottom()

@@ -1,43 +1,61 @@
-<form onsubmit="return false">
-    <input type="text" id="userlogin" name="userlogin" placeholder="Username" size="15">
-    <input type="text" id="password" name="password" placeholder="Password" size="15">
-    <input type="submit" value="Login" onclick="login()">
-    <input type="submit" value="Create Account" onclick="goToPage('/create-account')">
+<form class="d-grid gap-3">
+    <div class="row">
+        <div class="col-5">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <div class="picture-container">
+                <div class="picture">
+                    <img src="default_avatar.png" class="picture-src" id="avatar_preview" title="">
+                    <input type="file" id="avatar_uploader" onchange="uploadAvatar()">
+                </div>
+                Avatar
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5" id="errors" style="color: yellow;">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+                <label for="exampleInputName1">Username</label>
+                <input type="text" class="form-control bg-secondary text-light" id="exampleInputName1" placeholder="Username" required>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-5">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control bg-secondary text-light" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+        </div>
+    </div>
+
+    <div class = "row">
+        <div class="col-5">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control bg-secondary text-light" id="exampleInputPassword1" placeholder="Password" required>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-5 form-group">
+            <label for="signature">Signature:</label>
+            <textarea class="form-control bg-secondary text-light" id="signature" rows="5" cols="61" maxlength="100" style="overflow-y: hidden; resize:none;"></textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-1">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
 </form>
-
-<form>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-
-
-
-<!--<form id="create-account-form">-->
-<!--    <label>E-mail:</label><input type="text" id="userlogin" name="userlogin" placeholder="E-mail" size="15">-->
-<!--    <br>-->
-<!--    <label>Password:</label><input type="text" id="userlogin" name="userlogin" placeholder="Password" size="15">-->
-<!--    <br>-->
-<!--    <label>Avatar:</label>-->
-<!--    <br>-->
-<!--    <div>-->
-<!--        <img src="default_avatar.png" width="50" height="50">-->
-<!--        <br>-->
-<!--        <input type="file" accept="image/png, image/jpeg">-->
-<!--    </div>-->
-<!--    <label>Bio:</label><input type="text" id="userlogin" name="userlogin" placeholder="Username" size="15">-->
-<!--    <br>-->
-<!--    <label>Signature:</label><input type="text" id="userlogin" name="userlogin" placeholder="Username" size="15">-->
-<!--</form>-->
+<footer>
+    <link rel="stylesheet" href="/CSS/style-create_account.css">
+    <script type="text/javascript" src="/JS/create_account-client.js"></script>
+</footer>

@@ -9,5 +9,6 @@ module.exports = function(app) {
     //Route files
     require(appRoot + "/server/routes/route-login")(app)
     require(appRoot + "/server/routes/route-shoutbox")(app)
+    require(appRoot + "/server/routes/route-forum")(app)
 
 }
