@@ -6,7 +6,7 @@ global.appRoot = path.resolve(__dirname);
 
 const app = express()
 app.use(express.static(path.join(__dirname, 'client')));
-app.use(express.static(path.join(__dirname, 'server/data/images')));
+app.use(express.static(path.join(__dirname, 'server/data')));
 
 const port = 80
 
