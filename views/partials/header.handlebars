@@ -1,0 +1,37 @@
+<div class="row justify-content-start mb-2" style="background-image: linear-gradient(to right, rgba(0,0,0,0.5), rgba(125,125,125,0.5)), url('/images/top_banner.png'); height: 20%;">
+    <div class="col-6">
+        <img src="/images/logo.png" class="rounded float-start" style="width: 40%; height: auto;">
+    </div>
+    <div class="col-6" style="position: relative;">
+        <form style="position: absolute; bottom: 10px; right: 5px;" onsubmit="return false">
+            <input type="text" id="userlogin" name="userlogin" placeholder="Username" size="15" style="width:10vw; font-size: 1vw;">
+            <input type="text" id="password" name="password" placeholder="Password" size="15" style="width:10vw; font-size: 1vw;">
+            <input type="submit" value="Login" onclick="login()" style="width:10vw; font-size: 1vw;">
+            <input type="submit" value="Create Account" onclick="goToPage('/create-account')" style="width:10vw; font-size: 1vw;">
+        </form>
+    </div>
+    <nav class="navbar navbar-expand-sm navbar-dark" style="background-image: linear-gradient(15deg, #101010 0%, #202020 100%);">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="margin-left: -28px;">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">What's new?</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/forum">Forum</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Rules</a>
+                    </li>
+                </ul>
+            </div>
+            <form class="d-flex" style="margin-right: -11px;">
+                <input class="form-control ms-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-info" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+</div>

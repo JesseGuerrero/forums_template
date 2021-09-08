@@ -1,0 +1,47 @@
+<div class="thread container-fluid border-top border-bottom border-info pb-3">
+    <div class="header row">
+        <div class="col-7 offset-2 text-center">
+            <h3 id="post-title">{{getElementThenProperty threads.threads threadno "title"}}</h3>
+        </div>
+        <div class="col-2 offset-1 mt-auto">
+            <button class="float-end" onclick="showReplyPrompt()">Reply</button>
+        </div>
+    </div>
+    <div id="posts">
+        {{#each threads.threads.0.postings}}
+        <div class="row border-top border-bottom pb-3 pt-3">
+            <div class="col-1 border-end border-light">
+                <div class="text-center" style="margin:auto">
+                    <img src="/images/default_avatar.png" class = "img-fluid image-thumbnail">
+                    <br>
+                    <span class="username" style="font-size: 1em;">{{this.user}}</span>
+                </div>
+            </div>
+            <div class="col-11 border-end border-light" style="font-size: 1.1em;">
+                <div class="border-bottom border-secondary" style="font-size: 0.8em;">Dec-12-2020, 3:03PM</div>
+                {{this.message}}
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="footer row">
+        <div class="col-2 offset-10 mt-auto">
+            <button class="float-end" onclick="showReplyPrompt()">Reply</button>
+        </div>
+    </div>
+
+    <div class="row border-top mt-3" id="replyprompt" style="display: none">
+        <div class="col-12 text-center">
+            <h2>Post</h2>
+            <form onsubmit="return false">
+                <textarea id="chatbox-reply" maxlength="750" style="min-height: 30vh; min-width: 100%; overflow-y: scroll; resize:none; background-color: black; color:#B0B0B0;"></textarea>
+                <input class="post-reply float-end" type="submit" onclick="postReply()">
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <script type="text/javascript" src="/JS/forum-client.js"></script>
+</footer>

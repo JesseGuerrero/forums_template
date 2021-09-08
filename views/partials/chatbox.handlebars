@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-11">
+        <textarea readonly id="chatbox" name="chatbox" rows="5" cols="60" style="overflow-y: scroll; resize:none; background-color: black; color:#B0B0B0;">{{ chat }}</textarea><br><br>
+    </div>
+</div>
+<div class="row pb-3">
+    <div class="col-11">
+        <form onsubmit="return false">
+            <input type="text" id="text-input" name="text-input" placeholder="Enter chat text" size="57" style="background-color: black; color:gray;"><br><br>
+            <input type="submit" value="Post" onclick="postText()">
+        </form>
+    </div>
+</div>
+<footer>
+    <script type="text/javascript" src="/JS/chatbox-client.js"></script>
+</footer>

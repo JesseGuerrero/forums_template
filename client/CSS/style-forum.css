@@ -1,0 +1,10 @@
+.option:hover{
+    border-color: #9ecaed;
+    box-shadow:
+            inset 0px 11px 8px -10px #9ecaed,
+            inset 0px -11px 8px -10px #9ecaed;
+}
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}

@@ -11,42 +11,22 @@ module.exports = function(app) {
     hbs.handlebars.registerHelper('getElement', function(array, index) {
         return array[index]
     });
+    hbs.handlebars.registerHelper('getElementFromJSONKey', function(options) {
+        return options.hash.json[options.hash.key][options.hash.index]
+    });
+    hbs.handlebars.registerHelper('toTitleCase', function(str) {
+        return str.toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase());
+    });
+    hbs.handlebars.registerHelper('getElementThenProperty', function(array, index, property) {
+        return array[index][property]
+    });
+    hbs.handlebars.registerHelper('turnPathURLFriendly', function(string) {
+        return string.strToPathURLFriendly()
+    });
 
     //Route files
     require(appRoot + "/server/routes/route-login")(app)
     require(appRoot + "/server/routes/route-shoutbox")(app)
     require(appRoot + "/server/routes/route-forum")(app)
-
-    generateForums(app)
 }
 
-function generateForums(app) {
-    var path = appRoot+"/server/data/forum"
-    var topicsJSON = JSON.parse(fs.readFileSync(path + '/subject_list.json', 'utf8'))
-    for(var sub of topicsJSON['subjects']) {
-        var subjectFolder = path+"/" + sub;
-        if(!fs.existsSync(subjectFolder)) {
-            fs.mkdirSync(subjectFolder, (err) => {
-                if(err) return console.error(err)
-                console.log(sub + ' created successfully')
-            })
-            fs.writeFileSync(subjectFolder + "/description.txt", "This is the default description", () => {})
-            fs.copyFileSync(appRoot+"/server/data/images/default_subject_icon.png", subjectFolder+"/icon.png")
-        }
-
-        app.get('/forum/' + sub, (request, response) => {
-            response.render('sample_subject', { chat: gen.getChat()})
-        })
-    }
-
-    for(var sub of topicsJSON['subjects']) {
-        var subjectFolder = path+"/" + sub;
-        var description = fs.readFileSync(subjectFolder + "/description.txt", 'utf8').toString()
-        topicsJSON['description'].push(description);
-        topicsJSON['logoPaths'].push("/forum/" + sub + "/icon.png");
-    }
-
-    app.get('/forum', (request, response) => {
-        response.render('forum', { chat: gen.getChat(), topicsJSON: topicsJSON })
-    })
-}
