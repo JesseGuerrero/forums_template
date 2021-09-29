@@ -3,6 +3,7 @@
   {
     "Hulu": ["Best shows", "Trade", "Show-Off"],
     "Minecraft":  ["Java-Edition", "Bedrock"],
-    "WoW": ["Auction", "PvM"]
+    "WoW": ["Auction", "PvM"],
+    "Marvel": ["Phase discusions", "Avengers", "What if", "Others"]
   }
 }

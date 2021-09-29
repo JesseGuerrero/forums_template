@@ -3,9 +3,10 @@
         <img src="/images/logo.png" class="rounded float-start" style="width: 40%; height: auto;">
     </div>
     <div class="col-6" style="position: relative;">
-        <form style="position: absolute; bottom: 10px; right: 5px;" onsubmit="return false">
+        <div style="position: absolute; bottom: 50px; right: 10px; font-size: 1.5em; color: #AAAAAA;">Welcome <span style="color: white;">{{usernickname}}</span>!{{{ifNotEqualPostThis usernickname "Guest" "(<a id='logout-head' onclick='logout()'>logout</a>)"}}}</div>
+        <form id="createForm" onSubmit="return false" style="position: absolute; bottom: 10px; right: 5px;">
             <input type="text" id="userlogin" name="userlogin" placeholder="Username" size="15" style="width:10vw; font-size: 1vw;">
-            <input type="text" id="password" name="password" placeholder="Password" size="15" style="width:10vw; font-size: 1vw;">
+            <input type="password" id="password" name="password" placeholder="Password" size="15" style="width:10vw; font-size: 1vw;">
             <input type="submit" value="Login" onclick="login()" style="width:10vw; font-size: 1vw;">
             <input type="submit" value="Create Account" onclick="goToPage('/create-account')" style="width:10vw; font-size: 1vw;">
         </form>
@@ -35,3 +36,6 @@
         </div>
     </nav>
 </div>
+<footer>
+    <script type="text/javascript" src="/JS/login_form-client.js"></script>
+</footer>

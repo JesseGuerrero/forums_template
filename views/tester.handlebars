@@ -1,0 +1,14 @@
+<form action="/action_page.php" onsubmit="return false">
+    <label for="tester">Test:</label><br>
+    <input type="text" id="tester" name="tester"><br>
+    <input type="submit" value="Submit" onclick="test()">
+    <span id="result"></span>
+</form>
+<script>
+    let input = document.getElementById("tester")
+    let result = document.getElementById("result")
+
+    function test() {
+        result.innerText = input.value.strToBase32()
+    }
+</script>

@@ -1,17 +1,14 @@
 let username = document.getElementById("userlogin");
 let password = document.getElementById("password");
 
-let account_prompt = document.getElementById("create_account_prompt");
-
 function login() {
     postJSONToRoute('/login', {'login':{'username':username.value, 'password':password.value}})
+    location.reload(true);
 }
 
-function create_user() {
-    postJSONToRoute('/create-user', {'account':{'username':username.value, 'password':password.value, 'verified':false}})
-    showCreationDisplay()
-}
-
-function showCreationDisplay() {
-    account_prompt.innerText = "An email was sent to your account! " + hash(username.value)
+function logout() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/logout", true);
+    xhr.send()
+    location.reload(true);
 }

@@ -1,4 +1,4 @@
-<form class="d-grid gap-3">
+<form class="d-grid gap-3" onsubmit="return false">
     <div class="row">
         <div class="col-5">
         </div>
@@ -8,7 +8,7 @@
         <div class="col-2">
             <div class="picture-container">
                 <div class="picture">
-                    <img src="default_avatar.png" class="picture-src" id="avatar_preview" title="">
+                    <img src="/images/default_avatar.png" class="picture-src" id="avatar_preview" title="" enctype="multipart/form-data">
                     <input type="file" id="avatar_uploader" onchange="uploadAvatar()">
                 </div>
                 Avatar
@@ -17,28 +17,27 @@
     </div>
     <div class="row">
         <div class="col-5" id="errors" style="color: yellow;">
-
         </div>
     </div>
     <div class="row">
         <div class="col-5">
-                <label for="exampleInputName1">Username</label>
-                <input type="text" class="form-control bg-secondary text-light" id="exampleInputName1" placeholder="Username" required>
+                <label for="nickname">Username</label>
+                <input type="text" class="form-control bg-secondary text-light" id="nickname" placeholder="Username" required>
 
         </div>
     </div>
 
     <div class="row">
         <div class="col-5">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control bg-secondary text-light" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required>
+            <label for="email">Email address</label>
+            <input type="email" class="form-control bg-secondary text-light" id="email" aria-describedby="emailHelp" placeholder="Enter email" required>
         </div>
     </div>
 
     <div class = "row">
         <div class="col-5">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control bg-secondary text-light" id="exampleInputPassword1" placeholder="Password" required>
+            <label for="pass">Password</label>
+            <input type="password" class="form-control bg-secondary text-light" id="pass" placeholder="Password" required>
         </div>
     </div>
 
@@ -50,8 +49,9 @@
     </div>
 
     <div class="row">
-        <div class="col-1">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="col-12">
+        <button type="submit" class="btn btn-primary" onclick="create_user()">Submit</button>
+            <span id="create_account_prompt"></span>
         </div>
     </div>
 </form>

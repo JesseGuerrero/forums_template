@@ -33,13 +33,13 @@ function goToPage(url) {
     window.location.href = url
 }
 
-String.prototype.strToHex = function(){
+String.prototype.strToBase32 = function(){
     return this.split("")
         .map(c => c.charCodeAt(0).toString(16).padStart(2, "0"))
         .join("");
 }
 
-String.prototype.hexToStr = function(){
+String.prototype.base32ToStr = function(){
     return this.split(/(\w\w)/g)
         .filter(p => !!p)
         .map(c => String.fromCharCode(parseInt(c, 16)))

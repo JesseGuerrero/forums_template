@@ -29,3 +29,109 @@
 19:08 Guest: test
 17:35 Guest: sss
 17:35 Guest: sss
+16:40 Guest: hey
+16:40 Guest: hey
+16:41 Guest: yo
+16:41 Guest: yo
+16:43 Guest: uu
+16:45 Guest: asdf
+16:45 Guest: asdf
+16:47 Guest: 3232
+16:47 Guest: 3232
+16:49 Guest: hey
+16:49 Guest: sdf
+16:49 Guest: test
+16:49 Guest: sdf
+16:49 Guest: test
+16:49 Guest: hey
+16:50 Guest: tete
+16:50 Guest: asd
+16:50 Guest: tete
+16:50 Guest: asd
+16:52 Guest: res
+16:52 Guest: asd
+16:52 Guest: asd
+16:52 Guest: res
+16:52 Guest: rew
+16:52 Guest: rew
+16:53 Guest: qwe
+16:53 Guest: qwe
+16:54 Guest: tre
+16:54 Guest: tre
+16:54 Guest: asd
+16:55 Guest: test
+16:54 Guest: asd
+16:55 Guest: test
+16:55 Guest: test
+16:55 Guest: test
+16:56 Guest: dee
+16:56 Guest: dee
+16:57 Guest: uuu
+16:57 Guest: uuu
+17:00 Guest: hhh
+17:00 Guest: hhh
+17:00 Guest: asd
+17:01 Guest: test
+17:01 Guest: test
+17:01 Guest: hey
+17:01 Guest: yo
+10:34 undefined: asd
+10:34 undefined: asd
+10:35 undefined: wer
+10:35 undefined: wer
+10:36 [object Promise]: asd
+10:36 [object Promise]: asd
+10:36 [object Promise]: q
+10:36 [object Promise]: q
+10:40 [object Promise]: asd
+10:40 [object Promise]: asd
+10:43 [object Promise]: ff
+10:43 [object Promise]: ff
+10:44 [object HTMLInputElement]: asd
+10:44 [object HTMLInputElement]: asd
+10:46 [object HTMLInputElement]: ff
+10:46 [object HTMLInputElement]: ff
+10:46 [object HTMLInputElement]: 44
+10:46 [object HTMLInputElement]: 44
+10:46 [object HTMLInputElement]: 33
+10:46 [object HTMLInputElement]: 33
+10:46 [object HTMLInputElement]: ds
+10:46 [object HTMLInputElement]: ds
+10:48 [object HTMLInputElement]: dd
+10:48 [object HTMLInputElement]: dd
+10:48 [object HTMLInputElement]: asd
+10:48 [object HTMLInputElement]: asd
+10:49 [object HTMLInputElement]: 222
+10:49 [object HTMLInputElement]: 222
+10:49 [object HTMLInputElement]: 677
+10:49 [object HTMLInputElement]: 677
+10:50 [object HTMLInputElement]: d
+10:50 [object HTMLInputElement]: d
+10:53 : 765
+10:53 : 765
+10:55 : 44
+10:55 : 44
+10:56 : 333
+10:56 : 333
+10:56 : asd
+10:56 : asd
+10:56 : wd
+10:56 : wd
+10:57 : ddd
+10:57 : ddd
+11:08 jesseguerrero1991: sw
+11:09 jesseguerrero1991: 555
+11:09 jesseguerrero1991: 555
+11:08 jesseguerrero1991: sw
+11:11 jesseguerrero1991: 222
+23:47 Guest: sdfsdf
+19:27 Guest: test
+19:37 Guest: test
+19:37 Guest: test
+19:41 Jawarrior1: rwar
+20:11 Jawarrior1: tester
+20:10 Guest: waaa
+20:18 Guest: Post to Jesse
+20:19 Jawarrior1: my lord it works!!!!!
+20:19 Jawarrior1: try to create an account and post
+20:19 Jawarrior1: so proud :D :D

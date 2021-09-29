@@ -2,50 +2,114 @@ const fs = require('fs');
 const gen = require(appRoot + '/server/server-general')
 const nodemailer = require('nodemailer');
 const {request, response} = require("express");
+const fileUpload = require('express-fileupload');
+let userMap = {};
 
 module.exports = function(app) {
+    /**---Educational Info---
+     * req is information from the request of the client
+     * res is information being sent to the client from node.
+     * next is the upcoming portion of middleware
+     *      Middleware has a chain of code sections which are run after the other
+     *      next() calls the next poart of the middleware like a linkedlist
+     * the functions below inside get, post, use, all are all added to the middleware 'linkedlist'
+     * Lastly lets define middleware: Anything that is run between when a client request something
+     *      from the server and when the server sends a response.
+     */
+    app.use('*', function(req, res, next) {
+        if (!(/shoutbox/i.test(req.url))) {
+            let userIP = req.socket.remoteAddress
+            if (userIP in userMap)
+                res.locals.usernickname = userMap[userIP]
+            else
+                res.locals.usernickname = "Guest"
+        }
+        next()
+    })
+
+    // enable files upload
+    app.use(fileUpload({
+        createParentPath: true
+    }));
+
+    app.get('/user', (req, res) => {
+        console.log(typeof userMap)
+        let userIP = req.socket.remoteAddress
+        let nickname = "Guest"
+        if (userIP in userMap)
+            nickname = userMap[userIP]
+
+        res.send(JSON.stringify({
+            "nickname": nickname
+        }));
+    })
+
     app.post('/login', (request, response) => {
         console.log(request.body)
         if("login" in request.body)
-            if (fs.existsSync('server/data/users/' + request.body['login']['username'] + '.json'))
-                console.log("user login")
+            if (fs.existsSync('server/data/users/' + request.body['login']['username'] + '.json')) {
+                let userJSON = JSON.parse(fs.readFileSync('server/data/users/' + request.body['login']['username'] + '.json'))
+                console.log(JSON.stringify(userJSON))
+                console.log(request.socket.remoteAddress)
+                let userIP = request.socket.remoteAddress
+                userMap[userIP] = request.body['login']['username']
+            }
+        response.oidc.login({ returnTo: '/profile' })
     })
 
+    app.post('/logout', (request, response) => {
+        let userIP = request.socket.remoteAddress.toString()
+        delete userMap[userIP]
+    })
+
+    app.get('/custom-logout', (req, res) => res.send('Bye!'));
+
     app.post('/create-user', (request, response) => {
-        if("create_user" in request.body) {
+        console.log(request.body)
+        if("account" in request.body) {
             console.log("this ran")
-            var jsonPath = 'server/data/users/' + request.body['create_user']['username'] + '.json'
+            var jsonPath = 'server/data/users/' + request.body['account']['username'] + '.json'
             if (fs.existsSync(jsonPath))
                 console.log("user exists")
-            else
-                fs.writeFile(jsonPath, JSON.stringify(request.body['create_user']), () => {
-                    var username = request.body['create_user']['username']
-                    var validationURL = "http://72.191.29.70/confirmaccount/" + gen.hash(username)
-                    sendEmail('jesseguerrero1991@gmail.com', 'Hi, from Node ',
+            else {
+                let userJSON = request.body['account']
+                fs.writeFile(jsonPath, JSON.stringify(userJSON), () => {
+                    var username = request.body['account']['username']
+                    var validationURL = "http://localhost/confirmaccount/" + username.strToBase32()
+                    sendEmail(request.body['account']['email'], 'Hi, from Node ',
                         '<b>Click below </b><br> ' +
                         '<a href= ' + validationURL + '>verify e-mail</a>')
                 })
+                gen.insertMongoDoc("user", userJSON)
+            }
         }
+    })
+
+    app.post('/upload-avatar', (request, response) => {
+        let avatar = request.files.avatar;
+        avatar.mv('server/data/images/avatars/' + avatar.name);
     })
 
     app.get('/confirmaccount/*', (request, response) => {
         var username = request.url.replace('/confirmaccount/', '')
-        username = gen.decodeHash(username)
+        username = username.base32ToStr()
         var jsonPath = 'server/data/users/' + username + '.json'
         var prompText = ''
 
-        console.log(username)
         if(fs.existsSync(jsonPath)) {
-            console.log("account exists")
-            var userJSON = JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
-            console.log(userJSON)
+            let userJSON = JSON.parse(fs.readFileSync(jsonPath, 'utf8'))
+            let isVerified = userJSON['verified']
             userJSON['verified'] = true
             fs.writeFile(jsonPath, JSON.stringify(userJSON), () => {})
-            prompText = username + " verified!"
+
+            if(isVerified)
+                response.send('Your account has been verified')
+            else
+                response.send('Your account is already verified')
         }
         else
-            console.log("account doesn't exist")
-        response.render('index', { chat: gen.getChat(), prompt: prompText})
+            response.send("account doesn't exist")
+
     })
 
     app.get('/create-account', (request, response) => {
@@ -55,6 +119,7 @@ module.exports = function(app) {
 
 //Ref: https://bit.ly/2WmkLwz
 function sendEmail(recipient, subject, message) {
+    console.log(recipient)
     var transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,

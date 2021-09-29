@@ -8,11 +8,11 @@
         </div>
     </div>
     <div id="posts">
-        {{#each threads.threads.0.postings}}
+        {{#each (getElementThenProperty threads.threads threadno "postings")}}
         <div class="row border-top border-bottom pb-3 pt-3">
             <div class="col-1 border-end border-light">
                 <div class="text-center" style="margin:auto">
-                    <img src="/images/default_avatar.png" class = "img-fluid image-thumbnail">
+                    <img src="/images/avatars/{{getUserImage this.user}}" class = "img-fluid image-thumbnail">
                     <br>
                     <span class="username" style="font-size: 1em;">{{this.user}}</span>
                 </div>
