@@ -1,4 +1,4 @@
-<div class="thread container-fluid border-top border-bottom border-info pb-3">
+<div class="thread container-fluid pb-3">
     <div class="header row">
         <div class="col-7 offset-2 text-center">
             <h3 id="post-title">{{getElementThenProperty threads.threads threadno "title"}}</h3>
@@ -9,7 +9,8 @@
     </div>
     <div id="posts">
         {{#each (getElementThenProperty threads.threads threadno "postings")}}
-        <div class="row border-top border-bottom pb-3 pt-3">
+        {{#ifNumBetween @index (calcLowerFromPostPageNo @root.pageno) (calcUpperFromPostPageNo @root.pageno)}}
+            <div class="row border-top border-bottom pb-3 pt-3">
             <div class="col-1 border-end border-light">
                 <div class="text-center" style="margin:auto">
                     <img src="/images/avatars/{{getUserImage this.user}}" class = "img-fluid image-thumbnail">
@@ -20,8 +21,11 @@
             <div class="col-11 border-end border-light" style="font-size: 1.1em;">
                 <div class="border-bottom border-secondary" style="font-size: 0.8em;">Dec-12-2020, 3:03PM</div>
                 {{this.message}}
+                <br></br>--<br>
+                {{getUserSignature this.user}}
             </div>
         </div>
+        {{/ifNumBetween}}
         {{/each}}
     </div>
 
@@ -38,6 +42,21 @@
                 <textarea id="chatbox-reply" maxlength="750" style="min-height: 30vh; min-width: 100%; overflow-y: scroll; resize:none; background-color: black; color:#B0B0B0;"></textarea>
                 <input class="post-reply float-end" type="submit" onclick="postReply()">
             </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3 offset-4 d-flex justify-content-center" style="font-size: 1.3em;">
+            {{#ifNumBetween @root.pageno 2 (calcUpperFromPostPageNo @root.pageno)}}
+                <a href="/forum/{{@root.topic}}/{{@root.subjects}}/{{@root.threadno}}/{{@root.author}}/{{@root.title}}/{{minus @root.pageno 1}}">prev</a>
+                &nbsp;<a href="/forum/{{@root.topic}}/{{@root.subjects}}/{{@root.threadno}}/{{@root.author}}/{{@root.title}}/1">...</a>&nbsp;
+                {{minus @root.pageno 1}}
+            {{/ifNumBetween}}
+            {{@root.pageno}}
+            {{#ifNumBetween @root.pageno 1 (getPageCountOfPostings (getElementThenProperty threads.threads threadno "postings"))}}
+                {{add @root.pageno 1}}
+                &nbsp;<a href="/forum/{{@root.topic}}/{{@root.subjects}}/{{@root.threadno}}/{{@root.author}}/{{@root.title}}/{{getPageCountOfPostings (getElementThenProperty threads.threads threadno "postings")}}">...</a>&nbsp;
+                &nbsp;<a href="/forum/{{@root.topic}}/{{@root.subjects}}/{{@root.threadno}}/{{@root.author}}/{{@root.title}}/{{add @root.pageno 1}}">next</a>&nbsp;
+            {{/ifNumBetween}}
         </div>
     </div>
 </div>

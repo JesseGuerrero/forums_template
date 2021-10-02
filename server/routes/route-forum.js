@@ -46,7 +46,8 @@ module.exports = function(app) {
     })
     app.get('/forum/:topic/:subjects/:threadno/:author/:title/:pageno', (request, response) => {
         let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(request.params.topic, request.params.subjects) + "\\threads.json", 'utf8'))
-        response.render('posting_listing', { chat: gen.getChat(), threads: thread_listing, threadno: request.params.threadno })
+        response.render('posting_listing', { chat: gen.getChat(), threads: thread_listing, topic: request.params.topic,
+            subjects: request.params.subjects, threadno: request.params.threadno, author: request.params.author, title: request.params.title, pageno: request.params.pageno })
     })
 }
 

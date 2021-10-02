@@ -1,4 +1,4 @@
-<div class="thread container-fluid border-top border-bottom border-info pb-3">
+<div class="thread container-fluid pb-3">
     <div class="header row">
         <div class="col-7 offset-2 text-center">
             <h3 class="">{{threads.title}}</h3>
@@ -8,7 +8,7 @@
         </div>
     </div>
     {{#each threads.threads as |thread|}}
-        <div><a href = "{{@index}}/{{turnPathURLFriendly thread.author}}/{{turnPathURLFriendly thread.title}}/0">
+        <div><a href = "{{@index}}/{{turnPathURLFriendly thread.author}}/{{turnPathURLFriendly thread.title}}/1">
             <div class="option row border-top border-bottom pb-3 pt-3">
                 <div class="col-1 border-end border-light">
                     <div class="text-center" style="margin:auto">
@@ -31,11 +31,18 @@
     </div>
 
     <div class="row border-top mt-3" id="replyprompt" style="display: none">
-        <div class="col-12 text-center">
-            <h2>Post</h2>
+        <div class="col-12 text-center border">
+            <h2>New Thread</h2>
             <form onsubmit="return false">
-                <textarea class="chatbox-reply" maxlength="750" style="min-height: 30vh; min-width: 100%; overflow-y: scroll; resize:none; background-color: black; color:#B0B0B0;"></textarea>
-                <input class="post-reply float-end" type="submit" onclick="postReply()">
+                <div class="text-start">
+                    Title:
+                </div>
+                <textarea class="thread-title" maxlength="750" style="margin-bottom: 5px; min-height: 2.8vh; max-height: 2.8vh; min-width: 100%; resize:none; background-color: black; color:#B0B0B0;"></textarea>
+                <div class="text-start">
+                    Message:
+                </div>
+                <textarea class="chatbox-thread" maxlength="750" style="min-height: 30vh; min-width: 100%; overflow-y: scroll; resize:none; background-color: black; color:#B0B0B0;"></textarea>
+                <input class="post-reply float-end" type="submit" onclick="postThread()">
             </form>
         </div>
     </div>

@@ -5,6 +5,23 @@ const {request, response} = require("express");
 const fileUpload = require('express-fileupload');
 let userMap = {};
 
+function loadUserMap() {
+    let userMapJSONFile = appRoot+"/server/data/login-data.json"
+    if(!fs.existsSync(userMapJSONFile))
+        fs.mkdirSync(userMapJSONFile, (err) => {if (err) return console.error(err)})
+    else
+        userMap = JSON.parse(fs.readFileSync(userMapJSONFile, 'utf8'))
+}
+
+function saveUserMap() {
+    let userMapJSONFile = appRoot+"/server/data/login-data.json"
+    if(!fs.existsSync(userMapJSONFile))
+        fs.mkdirSync(userMapJSONFile, (err) => {if (err) return console.error(err)})
+    else
+        fs.writeFileSync(userMapJSONFile, JSON.stringify(userMap), (err) => {if (err) return console.error(err)})
+}
+
+loadUserMap()
 module.exports = function(app) {
     /**---Educational Info---
      * req is information from the request of the client
@@ -53,6 +70,7 @@ module.exports = function(app) {
                 console.log(request.socket.remoteAddress)
                 let userIP = request.socket.remoteAddress
                 userMap[userIP] = request.body['login']['username']
+                saveUserMap()
             }
         response.oidc.login({ returnTo: '/profile' })
     })
@@ -60,6 +78,7 @@ module.exports = function(app) {
     app.post('/logout', (request, response) => {
         let userIP = request.socket.remoteAddress.toString()
         delete userMap[userIP]
+        saveUserMap()
     })
 
     app.get('/custom-logout', (req, res) => res.send('Bye!'));

@@ -52,7 +52,34 @@ module.exports = function(app) {
             let userJSON = JSON.parse(fs.readFileSync(appRoot + "/server/data/users/Guest.json", 'utf8'))
             return userJSON['avatar']
         }
-
+    });
+    hbs.handlebars.registerHelper('getUserSignature', function(username) {
+        let path = appRoot + "/server/data/users/" + username + ".json"
+        if(fs.existsSync(path)) {
+            let userJSON = JSON.parse(fs.readFileSync(path, 'utf8'))
+            return userJSON['signature']
+        } else {
+            let userJSON = JSON.parse(fs.readFileSync(appRoot + "/server/data/users/Guest.json", 'utf8'))
+            return userJSON['signature']
+        }
+    });
+    hbs.handlebars.registerHelper('ifNumBetween', function(num, lower, upper, options) {
+        return (num >= lower && num < upper) ? options.fn(this) : options.inverse(this);
+    });
+    hbs.handlebars.registerHelper('calcLowerFromPostPageNo', function(pageno) {
+        return pageno*10-10;
+    });
+    hbs.handlebars.registerHelper('calcUpperFromPostPageNo', function(pageno) {
+        return pageno*10;
+    });
+    hbs.handlebars.registerHelper('add', function(num1, num2) {
+        return Number(num1)+Number(num2);
+    });
+    hbs.handlebars.registerHelper('minus', function(num1, num2) {
+        return Number(num1)-Number(num2);
+    });
+    hbs.handlebars.registerHelper('getPageCountOfPostings', function(postings) {
+        return Math.ceil(postings.length/10.0);
     });
 
     //Route files
