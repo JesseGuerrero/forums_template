@@ -39,6 +39,29 @@ module.exports = function(app) {
         })
         fs.writeFileSync(getSubjectPath(topic, subject) + "\\threads.json", JSON.stringify(thread_listing))
     })
+
+    app.post('/postthread', (request, response) => {
+        let url = request.headers.referer
+        let topic, subject, thread_title, thread_author, message;
+        [topic, subject, thread_author, thread_title, message] = [request.body["topic"], request.body["subject"], request.body["user"], request.body["thread_title"], request.body["message"]]
+        let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(topic, subject) + "\\threads.json", 'utf8'))
+        console.log(thread_listing)
+        thread_listing["threads"].unshift({
+            "title": thread_title,
+            "author": thread_author,
+            "publish_date": 2,
+            "latest_date": 1,
+            "postings": [
+                {
+                    "user": thread_author,
+                    "message": message,
+                    "post_date": 2
+                }
+            ]
+        })
+        fs.writeFileSync(getSubjectPath(topic, subject) + "\\threads.json", JSON.stringify(thread_listing))
+    })
+
     generateForums(app)
     app.get('/forum/:topic/:subjects', (request, response) => {
         let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(request.params.topic, request.params.subjects) + "\\threads.json", 'utf8'))
