@@ -1,9 +1,8 @@
 {
   "topics":
   {
-    "Hulu": ["Best shows", "Trade", "Show-Off"],
-    "Minecraft":  ["Java-Edition", "Bedrock"],
-    "WoW": ["Auction", "PvM"],
-    "Marvel": ["Phase discusions", "Avengers", "What if", "Others"]
+    "General": ["Introductions", "Discussion", "Humor"],
+    "University": ["Activites", "Student Org", "Free stuff"],
+    "Homework":  ["Computer Science", "Business", "Math", "Physics"]
   }
 }

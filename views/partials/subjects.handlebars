@@ -1,5 +1,5 @@
 {{#each topicsJSON.topics as |topic|}}
-    <div class="container-fluid border border-3 pb-3">
+    <div class="container-fluid">
         <div class="row border-bottom border-secondary">
             <h2 class="text-center">{{toTitleCase @key}}</h2>
         </div>
@@ -7,13 +7,13 @@
             <a href = "{{turnPathURLFriendly @../key}}/{{turnPathURLFriendly subject}}">
                 <div class="option row border-bottom border-secondary">
                     <div class="col-1">
-                        <img src = "{{getElementFromJSONKey json=@root.topicsJSON.subjectIcons key=@../key index=@index}}" class="img-fluid" style="height:75px">
+                        <img src = "/images/subject_icon.png" class="img-fluid" style="height:75px">
                     </div>
                     <div class="col-10 text-start">
                         <div class="subject-title">
                             {{toTitleCase subject}}
                         </div>
-                        <span style="color:#909090;">{{getElementFromJSONKey json=@root.topicsJSON.description key=@../key index=@index}}</span>
+                        <span style="color:#909090;">This is the default description</span>
                     </div>
                 </div>
             </a>

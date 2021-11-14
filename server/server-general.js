@@ -1,6 +1,5 @@
-let DB_NAME = "school"
 let MongoClient = require('mongodb').MongoClient;
-let url = "mongodb://localhost:27017/";
+let URL = "mongodb://localhost:27017/";
 
 const fs = require("fs");
 
@@ -33,28 +32,105 @@ function getChat() {
     return chatString.toString().replace(/\n*$/, "")
 }
 
-function getMongoDoc(collection_name) {
-    MongoClient.connect(url, function(err, db) {
+//---MongoDB Functions---
+
+function getFirstMongoDoc(db_name, collection_name) {
+    MongoClient.connect(URL, function(err, db) {
         if (err) throw err;
-        var dbo = db.db(DB_NAME);
-        dbo.collection(collection_name).findOne({}, function(err, result) {
+        var dbo = db.db(db_name);
+        dbo.collection(collection_name).findOne({}, function(err, doc) {
             if (err) throw err;
-            console.log(result.name);
             db.close();
         });
     });
 }
 
-function insertMongoDoc(collection_name, jsonObj) {
-    MongoClient.connect(url, function(err, db) {
+function getMongoDocAndDo(db_name, collection_name, filterJSON, callback) {
+    MongoClient.connect(URL, function(err, db) {
         if (err) throw err;
-        var dbo = db.db(DB_NAME);
-        dbo.collection(collection_name).insertOne(jsonObj, function(err, res) {
+        var dbo = db.db(db_name);
+        dbo.collection(collection_name).findOne(filterJSON, function(err, doc) {
             if (err) throw err;
-            console.log("1 document inserted");
+            callback(doc)
             db.close();
         });
     });
+}
+
+function insertMongoDoc(db_name, collection_name, jsonObj, callback) {
+    MongoClient.connect(URL, function(err, db) {
+        if (err) throw err;
+        let dbo = db.db(db_name);
+        dbo.collection(collection_name).insertOne(jsonObj, function(err, doc) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            callback(doc)
+            db.close();
+        });
+    });
+}
+
+function updateOneMongoDoc(db_name, collection_name, filter, changes, callback) {
+    MongoClient.connect(URL, function(err, db) {
+        if (err) throw err;
+        let dbo = db.db(db_name);
+        dbo.collection(collection_name).updateOne(filter, changes, function(err, doc) {
+            if (err) throw err;
+            console.log("1 document updated");
+            callback(doc)
+            db.close();
+        });
+    });
+}
+
+function ifMongoDocExistsDo(db_name, collection_name, filterJSON, callback) {
+    MongoClient.connect(URL, function(err, db) {
+        if(err) throw err;
+        let dbo = db.db(db_name);
+        dbo.collection(collection_name).findOne(filterJSON, function(err, doc) {
+            if(err) throw error;
+            if(doc != null)
+                callback(doc)
+            db.close();
+        })
+    })
+}
+
+function ifMongoDocDoesNotExistDo(db_name, collection_name, filterJSON, callback) {
+    MongoClient.connect(URL, function(err, db) {
+        if(err) throw err;
+        let dbo = db.db(db_name);
+        dbo.collection(collection_name).findOne(filterJSON, function(err, doc) {
+            if(err) throw error;
+            if(doc == null)
+                callback(doc)
+            db.close();
+        })
+    })
+}
+
+function existentCollectionDo(db_name, collection_name, callback) {
+    MongoClient.connect(URL, function(err, db) {
+        if(err) throw err;
+        let dbo = db.db(db_name);
+        dbo.listCollections({name: collection_name})
+            .next(function(err, isExistent) {
+                callback(isExistent)
+                db.close();
+            })
+    })
+}
+
+function createCollection(db_name, collection_name, callback) {
+    MongoClient.connect(URL, function(err, db) {
+        if(err) throw err;
+        let dbo = db.db(db_name);
+        dbo.createCollection(collection_name, function(err, doc) {
+            if(err) throw error;
+            callback()
+            db.close();
+        });
+    })
 }
 
 String.prototype.strToBase32 = function(){
@@ -94,5 +170,11 @@ String.prototype.strToPathURLFriendly = function(){
 module.exports.hash = hash;
 module.exports.decodeHash = decodeHash;
 module.exports.getChat = getChat;
-module.exports.getMongoDoc = getMongoDoc;
+module.exports.getMongoDocAndDo = getMongoDocAndDo;
 module.exports.insertMongoDoc = insertMongoDoc;
+module.exports.ifMongoDocExistsDo = ifMongoDocExistsDo;
+module.exports.ifMongoDocDoesNotExistDo = ifMongoDocDoesNotExistDo;
+module.exports.updateOneMongoDoc = updateOneMongoDoc;
+module.exports.getFirstMongoDoc = getFirstMongoDoc;
+module.exports.createCollection = createCollection;
+module.exports.existentCollectionDo = existentCollectionDo;

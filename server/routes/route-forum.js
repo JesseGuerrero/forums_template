@@ -1,10 +1,9 @@
 const gen = require(appRoot + "/server/server-general");
 const {request, response} = require("express");
 const fs = require("fs");
+const {existentCollectionDo, createCollection, ifMongoDocDoesNotExistDo, insertMongoDoc, getMongoDocAndDo} = require("../server-general");
 
 module.exports = function(app) {
-    gen.getMongoDoc("user");
-
     app.get('/forum/subject', (request, response) => {
 
     })
@@ -64,66 +63,50 @@ module.exports = function(app) {
 
     generateForums(app)
     app.get('/forum/:topic/:subjects', (request, response) => {
-        let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(request.params.topic, request.params.subjects) + "\\threads.json", 'utf8'))
-        response.render('thread_listing', { chat: gen.getChat(), threads: thread_listing })
+        // let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(request.params.topic, request.params.subjects) + "\\threads.json", 'utf8'))
+        getMongoDocAndDo("forum", request.params.topic, {subject: request.params.subjects}, (thread_listing)=>{
+            response.render('thread_listing', { chat: gen.getChat(), threads: thread_listing })
+        })
+
     })
     app.get('/forum/:topic/:subjects/:threadno/:author/:title/:pageno', (request, response) => {
-        let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(request.params.topic, request.params.subjects) + "\\threads.json", 'utf8'))
-        response.render('posting_listing', { chat: gen.getChat(), threads: thread_listing, topic: request.params.topic,
+        getMongoDocAndDo("forum", request.params.topic, {subject: request.params.subjects}, (thread_listing)=>{
+            response.render('posting_listing', { chat: gen.getChat(), threads: thread_listing, topic: request.params.topic,
             subjects: request.params.subjects, threadno: request.params.threadno, author: request.params.author, title: request.params.title, pageno: request.params.pageno })
+        })
     })
 }
 
 function generateForums(app) {
     var path = appRoot+"/server/data/forum"
     var topicsJSON = JSON.parse(fs.readFileSync(path + '/subject_list.json', 'utf8'))
-    for(var topic in topicsJSON['topics']) {
-        var topicPath = path+"/"+topic.strToPathURLFriendly()
-        if(!fs.existsSync(topicPath))
-            fs.mkdirSync(topicPath, (err) => {if (err) return console.error(err)})
-        if(!fs.existsSync(topicPath + "/topic_icon.png"))
-            fs.copyFileSync(appRoot+"/server/data/images/default_topic_icon.png", topicPath+"/topic_icon.png")
 
-        for(var subject of topicsJSON['topics'][topic]) {//var = global to file, let to scope, const can edit but not reassign, mutable but not overwrite
-            var subjectPath = topicPath + "/" + subject.strToPathURLFriendly()
-            if(!fs.existsSync(subjectPath))
-                fs.mkdirSync(subjectPath, (err) => {if (err) return console.error(err)})
-            if(!fs.existsSync(subjectPath + "/threads.json"))
-                fs.writeFileSync(subjectPath + "/threads.json",
-                    JSON.stringify({
-                        "topic": topic,
-                        "subject": subject,
-                        "threads":[{"title":"Welcome to thread!","author":"Jawarrior1","publish_date":2,"latest_date":1, "postings":[{"user":"Jawarrior2","message":"Welcome...","post_date":2},{"user":"Jawarrior2","message":"Thanks","post_date":3},{"user":"Jawarrior2","message":"Cool beans","post_date":4},{"user":"guest","message":"okay","post_date":99},{"user":"guest","message":"That was...","post_date":99}]},
-                            {"title":"Rules...","author":"That dude","publish_date":3,"latest_date":4,"postings":[{"user":"Jawarrior2","message":"Was good","post_date":2},{"user":"Jawarrior2","message":"He likes SnapChat","post_date":3},{"user":"Jawarrior2","message":"maybe","post_date":4}]}]
-                    }), (err) => {if (err) return console.error(err)})
-            if(!fs.existsSync(subjectPath + "/description.txt"))
-                fs.writeFileSync(subjectPath + "/description.txt", "This is the default description", () => {})
-            if(!fs.existsSync(subjectPath + "/subject_icon.png"))
-                fs.copyFileSync(appRoot+"/server/data/images/default_topic_icon.png", subjectPath+"/subject_icon.png")
+    for(let topic in topicsJSON['topics']) {
+        existentCollectionDo("forum", topic, (isExistent)=> {
+            if(!isExistent)
+                createCollection("forum", topic, () => {})
+        })
+        let subjects = topicsJSON['topics'][topic]
+        for(let i = 0; i < subjects.length; i++) {
+            let subject = subjects[i]
+            ifMongoDocDoesNotExistDo("forum", topic, {"subject": subject}, ()=> {
+                let json = {
+                    "topic": topic,
+                    "subject": subject,
+                    "description": "This is the default description",
+                    "icon": "subject_icon.png",
+                    "threads":[{"title":"Welcome to thread!","author":"Jawarrior1","publish_date":2,"latest_date":1, "postings":[{"user":"Jawarrior2","message":"Welcome...","post_date":2},{"user":"Jawarrior2","message":"Thanks","post_date":3},{"user":"Jawarrior2","message":"Cool beans","post_date":4},{"user":"guest","message":"okay","post_date":99},{"user":"guest","message":"That was...","post_date":99}]},
+                    {"title":"Rules...","author":"That dude","publish_date":3,"latest_date":4,"postings":[{"user":"Jawarrior2","message":"Was good","post_date":2},{"user":"Jawarrior2","message":"He likes SnapChat","post_date":3},{"user":"Jawarrior2","message":"maybe","post_date":4}]}]
+                }
+                insertMongoDoc("forum", topic, json, ()=>{})
+            })
         }
     }
 
-    topicsJSON['topicIcons'] = []
-    topicsJSON['description'] = {}
-    topicsJSON['subjectIcons'] = {}
-    for(var topic in topicsJSON['topics']) {
-        topic = topic.strToPathURLFriendly()
-        var topicPath = path+"/"+topic
-
-        topicsJSON['topicIcons'].push("/" + topic + "/topic_icon.png")
-        topicsJSON['description'][topic] = []
-        topicsJSON['subjectIcons'][topic] = []
-        for(var subject of topicsJSON['topics'][topic]) {
-            subject = subject.strToPathURLFriendly()
-            var subjectPath = topicPath + "/" + subject
-            var description = fs.readFileSync(subjectPath + "/description.txt", 'utf8').toString()
-            topicsJSON['description'][topic].push(description);
-            topicsJSON['subjectIcons'][topic].push(topic + "/" + subject + "/subject_icon.png");
-        }
-    }
     app.get('/forum', (request, response) => {
         response.render('forum', { chat: gen.getChat(), topicsJSON: topicsJSON })
     })
+
 }
 
 function getSubjectPath(topic_name, subject_name) {

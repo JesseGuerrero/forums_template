@@ -8,7 +8,6 @@ let signature = document.getElementById("signature");
 let account_prompt = document.getElementById("create_account_prompt");
 
 
-
 function create_user() {
     console.log(nickname.value)
     console.log(pass.value)
@@ -23,6 +22,10 @@ function create_user() {
         file_name = file_name + ".jpeg"
     else if(file.type.includes("jpg"))
         file_name = file_name + ".jpg"
+    else if(file.type.includes("gif"))
+        file_name = file_name + ".gif"
+    else
+        file_name = "0.png"
 
     file = new File([file], file_name, {type: file.type});
     let formData = new FormData();

@@ -3,7 +3,7 @@ let password = document.getElementById("password");
 
 function login() {
     postJSONToRoute('/login', {'login':{'username':username.value, 'password':password.value}})
-    location.reload(true);
+    setTimeout(()=>location.reload(true), 2500);
 }
 
 function logout() {

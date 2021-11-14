@@ -13,7 +13,7 @@ const port = 80
 require(appRoot + "/server/startup")(app)
 
 app.get(['/', '/whats-new'], (request, response) => {
-    response.render('news')
+    response.redirect('/forum')
 })
 
 app.listen(port, '0.0.0.0', ()=> console.log("Successful on port " + port))

@@ -3,7 +3,11 @@ const gen = require(appRoot + '/server/server-general')
 const nodemailer = require('nodemailer');
 const {request, response} = require("express");
 const fileUpload = require('express-fileupload');
+const {getMongoDoc} = require("../server-general");
 let userMap = {};
+
+// gen.updateOneMongoDoc("website", "Users", {"email": "jesseguerrero1991@gmail.com", "username": "jazneta"},
+//     {$set : {"password": "ilikepeas2"}}, ()=>{});
 
 function loadUserMap() {
     let userMapJSONFile = appRoot+"/server/data/login-data.json"
@@ -63,15 +67,23 @@ module.exports = function(app) {
 
     app.post('/login', (request, response) => {
         console.log(request.body)
-        if("login" in request.body)
-            if (fs.existsSync('server/data/users/' + request.body['login']['username'] + '.json')) {
-                let userJSON = JSON.parse(fs.readFileSync('server/data/users/' + request.body['login']['username'] + '.json'))
-                console.log(JSON.stringify(userJSON))
-                console.log(request.socket.remoteAddress)
-                let userIP = request.socket.remoteAddress
-                userMap[userIP] = request.body['login']['username']
-                saveUserMap()
-            }
+        if("login" in request.body) {
+            // if (fs.existsSync('server/data/users/' + request.body['login']['username'] + '.json')) {
+            //     let userJSON = JSON.parse(fs.readFileSync('server/data/users/' + request.body['login']['username'] + '.json'))
+            //     console.log(JSON.stringify(userJSON))
+            //     console.log(request.socket.remoteAddress)
+            //     let userIP = request.socket.remoteAddress
+            //     userMap[userIP] = request.body['login']['username']
+            //     saveUserMap()
+            // }
+            gen.ifMongoDocExistsDo("website", "Users", {"username": request.body['login']['username']}, (doc)=>{
+                if(doc["password"] == request.body['login']['password']) {
+                    let userIP = request.socket.remoteAddress
+                    userMap[userIP] = request.body['login']['username']
+                    saveUserMap()
+                }
+            })
+        }
         response.oidc.login({ returnTo: '/profile' })
     })
 
@@ -86,21 +98,34 @@ module.exports = function(app) {
     app.post('/create-user', (request, response) => {
         console.log(request.body)
         if("account" in request.body) {
-            console.log("this ran")
-            var jsonPath = 'server/data/users/' + request.body['account']['username'] + '.json'
-            if (fs.existsSync(jsonPath))
-                console.log("user exists")
-            else {
-                let userJSON = request.body['account']
-                fs.writeFile(jsonPath, JSON.stringify(userJSON), () => {
+            console.log("/create-user ran")
+            let userJSON = request.body['account']
+            gen.ifMongoDocDoesNotExistDo("website", "Users", {"username": request.body['account']['username']}, ()=>{
+                gen.insertMongoDoc("website", "Users", userJSON, ()=>{
                     var username = request.body['account']['username']
-                    var validationURL = "http://localhost/confirmaccount/" + username.strToBase32()
-                    sendEmail(request.body['account']['email'], 'Hi, from Node ',
-                        '<b>Click below </b><br> ' +
-                        '<a href= ' + validationURL + '>verify e-mail</a>')
-                })
-                gen.insertMongoDoc("user", userJSON)
-            }
+                    sendEmail(request.body['account']['email'], 'Your account was successfully created!',
+                        'Username: <b>' + username + '</b><br> ' +
+                        'Password: <b>' + request.body['account']['password'] + '</b><br> ' );
+                });
+            });
+            gen.ifMongoDocExistsDo("website", "Users", {"username": request.body['account']['username']}, ()=>{
+                var username = request.body['account']['username']
+                sendEmail(request.body['account']['email'], 'Your account could not be created...',
+                    'The username <b>' + username + ', is taken.</b>');
+            });
+            // var jsonPath = 'server/data/users/' + request.body['account']['username'] + '.json'
+            // if (fs.existsSync(jsonPath))
+            //     console.log("user exists")
+            // else {
+            //     let userJSON = request.body['account']
+                // fs.writeFile(jsonPath, JSON.stringify(userJSON), () => {
+                //     var username = request.body['account']['username']
+                //     var validationURL = "http://localhost/confirmaccount/" + username.strToBase32()
+                //     sendEmail(request.body['account']['email'], 'Hi, from Node ',
+                //         '<b>Click below </b><br> ' +
+                //         '<a href= ' + validationURL + '>verify e-mail</a>')
+                // })
+            // }
         }
     })
 
