@@ -1,11 +1,3 @@
-# forums_template
-Useful for creating forums of all kinds
+To setup a private instance, create a MongoDB locally and create a "forum" and a "website" database. Inside website create a "Users" collection. The forum's database collections will auto-generate. You will have to re-run the app after it generates as it will throw an error.
 
-
-http://localhost/forum/Hulu/Best-shows/0/auther/threadtitle/page/postno
-
-forum->topic->subject->threadindex->author->threadtitle->postingpage->postno
-
-No author/thread-title can be the same throughout the forums<br>
-from "/forum../postno" is a posting id<br>
-from "/forum../threadtitle/0/0" is a thread id
+After that you <i>should</i> be able to run the website locally.
