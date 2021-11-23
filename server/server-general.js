@@ -109,6 +109,17 @@ function ifMongoDocDoesNotExistDo(db_name, collection_name, filterJSON, callback
     })
 }
 
+function replaceMongoDoc(db_name, collection_name, filterJSON, replacementJSON) {
+    MongoClient.connect(URL, function(err, db) {
+        if(err) throw err;
+        let dbo = db.db(db_name);
+        dbo.collection(collection_name).replaceOne(filterJSON, replacementJSON, function(err, doc) {
+            if(err) throw error;
+            db.close();
+        })
+    })
+}
+
 function existentCollectionDo(db_name, collection_name, callback) {
     MongoClient.connect(URL, function(err, db) {
         if(err) throw err;
@@ -131,6 +142,19 @@ function createCollection(db_name, collection_name, callback) {
             db.close();
         });
     })
+}
+
+function getTimeStamp() {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let month = today.toLocaleString('default', { month: 'short' })
+    let yyyy = today.getFullYear();
+    let time = today.toTimeString().replace(/.*(\d{2}:\d{2})(:\d{2}).*/, "$1")
+    let hh = today.getUTCHours() > 12 ? today.getUTCHours()-12 : today.getUTCHours();
+    let mm = today.getUTCMinutes();;
+    let ampm = today.getUTCHours() > 12 ? "PM" : "AM"
+    time = hh+":"+mm+":"+ampm;
+    return month+"-"+dd+"-"+yyyy+", "+ time
 }
 
 String.prototype.strToBase32 = function(){
@@ -178,3 +202,5 @@ module.exports.updateOneMongoDoc = updateOneMongoDoc;
 module.exports.getFirstMongoDoc = getFirstMongoDoc;
 module.exports.createCollection = createCollection;
 module.exports.existentCollectionDo = existentCollectionDo;
+module.exports.replaceMongoDoc = replaceMongoDoc;
+module.exports.getTimeStamp = getTimeStamp;

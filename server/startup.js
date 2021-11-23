@@ -2,24 +2,8 @@ const gen = require(appRoot + "/server/server-general");
 const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-require('dotenv').config();
-const { auth } = require('express-openid-connect')
 
 module.exports = function(app) {
-    app.use(
-        auth({
-            authRequired: false,
-            auth0Logout: true,
-            issuerBaseURL: process.env.ISSUER_BASE_URL,
-            baseURL: process.env.BASE_URL,
-            clientID: process.env.CLIENT_ID,
-            secret: process.env.SECRET,
-            routes: {
-                login: false,
-                postLogoutRedirect: '/custom-logout'
-            }
-        })
-    );
     app.use(bodyParser.json());
     app.engine('handlebars', exphbs())
     app.set('view engine', 'handlebars')
@@ -44,14 +28,14 @@ module.exports = function(app) {
             return postthis
     });
     hbs.handlebars.registerHelper('getUserImage', function(username) {
-        let path = appRoot + "/server/data/users/" + username + ".json"
-        if(fs.existsSync(path)) {
-            let userJSON = JSON.parse(fs.readFileSync(path, 'utf8'))
-            return userJSON['avatar']
-        } else {
-            let userJSON = JSON.parse(fs.readFileSync(appRoot + "/server/data/users/Guest.json", 'utf8'))
-            return userJSON['avatar']
+        let fileTypes = new Array(".png", ".jpeg", ".jpg", ".gif")
+        for(let i = 0; i<fileTypes.length; i++) {
+            let file_name = username.strToBase32() + fileTypes[i];
+            let path = appRoot + "/server/data/images/avatars/" + file_name;
+            if (fs.existsSync(path))
+                return file_name;
         }
+        return "0.png";
     });
     hbs.handlebars.registerHelper('getUserSignature', function(username) {
         let path = appRoot + "/server/data/users/" + username + ".json"

@@ -2,7 +2,7 @@
   "topics":
   {
     "General": ["Introductions", "Discussion", "Humor"],
-    "University": ["Activites", "Student Org", "Free stuff"],
-    "Homework":  ["Computer Science", "Business", "Math", "Physics"]
+    "University": ["Activites", "Student-Org", "Free-stuff"],
+    "Homework":  ["Programming", "Business", "Math", "Physics"]
   }
 }

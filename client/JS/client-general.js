@@ -35,7 +35,7 @@ function goToPage(url) {
 
 String.prototype.strToBase32 = function(){
     return this.split("")
-        .map(c => c.charCodeAt(0).toString(16).padStart(2, "0"))
+        .map(c => c.charCodeAt(0).toString(32).padStart(2, "0"))
         .join("");
 }
 

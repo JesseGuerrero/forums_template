@@ -1,7 +1,12 @@
 const gen = require(appRoot + "/server/server-general");
 const {request, response} = require("express");
 const fs = require("fs");
-const {existentCollectionDo, createCollection, ifMongoDocDoesNotExistDo, insertMongoDoc, getMongoDocAndDo} = require("../server-general");
+const {replaceMongoDoc, existentCollectionDo, createCollection, ifMongoDocDoesNotExistDo, insertMongoDoc, getMongoDocAndDo,
+    getTimeStamp
+} = require("../server-general");
+
+
+
 
 module.exports = function(app) {
     app.get('/forum/subject', (request, response) => {
@@ -19,51 +24,57 @@ module.exports = function(app) {
         let url = request.headers.referer
         let topic, subject, title, reply_user, new_text;
         [topic, subject, title, reply_user, new_text] = [request.body["topic"], request.body["subject"], request.body["post_title"], request.body["user"], request.body["text"]]
-        let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(topic, subject) + "\\threads.json", 'utf8'))
-        console.log(thread_listing)
-        let i = -1
-        while(true || i == 100) {
-            if (thread_listing["threads"][++i]["title"] == title)
-                break;
-        }
-        if(i == 100) {
-            return;
-        }
-        console.log(i)
-        console.log(thread_listing["threads"][i]["postings"])
-        thread_listing["threads"][i]["postings"].push({
-            "user": reply_user,
-            "message": new_text,
-            "post_date": 99
+        getMongoDocAndDo("forum", topic, {"subject": subject}, (doc)=>{
+            let thread_listing = doc
+            console.log(thread_listing)
+            let i = -1
+            while(true || i == 100) {
+                if (thread_listing["threads"][++i]["title"] == title)
+                    break;
+            }
+            if(i == 100) {
+                return;
+            }
+            console.log(i)
+            console.log(thread_listing["threads"][i]["postings"])
+
+
+
+            thread_listing["threads"][i]["postings"].push({
+                "user": reply_user,
+                "message": new_text,
+                "post_date": getTimeStamp()
+            })
+            replaceMongoDoc("forum", topic, {"subject": subject}, thread_listing)
         })
-        fs.writeFileSync(getSubjectPath(topic, subject) + "\\threads.json", JSON.stringify(thread_listing))
+
     })
 
     app.post('/postthread', (request, response) => {
         let url = request.headers.referer
         let topic, subject, thread_title, thread_author, message;
         [topic, subject, thread_author, thread_title, message] = [request.body["topic"], request.body["subject"], request.body["user"], request.body["thread_title"], request.body["message"]]
-        let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(topic, subject) + "\\threads.json", 'utf8'))
-        console.log(thread_listing)
-        thread_listing["threads"].unshift({
-            "title": thread_title,
-            "author": thread_author,
-            "publish_date": 2,
-            "latest_date": 1,
-            "postings": [
-                {
-                    "user": thread_author,
-                    "message": message,
-                    "post_date": 2
-                }
-            ]
+        getMongoDocAndDo("forum", topic, {"subject": subject}, (doc)=> {
+            let thread_listing = doc
+            thread_listing["threads"].unshift({
+                "title": thread_title,
+                "author": thread_author,
+                "publish_date": 2,
+                "latest_date": 1,
+                "postings": [
+                    {
+                        "user": thread_author,
+                        "message": message,
+                        "post_date": getTimeStamp()
+                    }
+                ]
+            })
+            replaceMongoDoc("forum", topic, {"subject": subject}, thread_listing)
         })
-        fs.writeFileSync(getSubjectPath(topic, subject) + "\\threads.json", JSON.stringify(thread_listing))
     })
 
     generateForums(app)
     app.get('/forum/:topic/:subjects', (request, response) => {
-        // let thread_listing = JSON.parse(fs.readFileSync(getSubjectPath(request.params.topic, request.params.subjects) + "\\threads.json", 'utf8'))
         getMongoDocAndDo("forum", request.params.topic, {subject: request.params.subjects}, (thread_listing)=>{
             response.render('thread_listing', { chat: gen.getChat(), threads: thread_listing })
         })

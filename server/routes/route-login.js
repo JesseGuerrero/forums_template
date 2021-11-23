@@ -54,7 +54,6 @@ module.exports = function(app) {
     }));
 
     app.get('/user', (req, res) => {
-        console.log(typeof userMap)
         let userIP = req.socket.remoteAddress
         let nickname = "Guest"
         if (userIP in userMap)
@@ -84,7 +83,6 @@ module.exports = function(app) {
                 }
             })
         }
-        response.oidc.login({ returnTo: '/profile' })
     })
 
     app.post('/logout', (request, response) => {
@@ -113,19 +111,6 @@ module.exports = function(app) {
                 sendEmail(request.body['account']['email'], 'Your account could not be created...',
                     'The username <b>' + username + ', is taken.</b>');
             });
-            // var jsonPath = 'server/data/users/' + request.body['account']['username'] + '.json'
-            // if (fs.existsSync(jsonPath))
-            //     console.log("user exists")
-            // else {
-            //     let userJSON = request.body['account']
-                // fs.writeFile(jsonPath, JSON.stringify(userJSON), () => {
-                //     var username = request.body['account']['username']
-                //     var validationURL = "http://localhost/confirmaccount/" + username.strToBase32()
-                //     sendEmail(request.body['account']['email'], 'Hi, from Node ',
-                //         '<b>Click below </b><br> ' +
-                //         '<a href= ' + validationURL + '>verify e-mail</a>')
-                // })
-            // }
         }
     })
 

@@ -4,6 +4,7 @@ let subject = document.getElementById("subject")
 
 //Appears based on create_thread & post_reply
 let reply_prompt = document.getElementById("replyprompt")
+let reply_prompt_shower = document.getElementsByClassName("prompt-shower")
 
 //Post information
 let reply_chatbox = document.getElementById("chatbox-reply")
@@ -13,6 +14,25 @@ let post_title = document.getElementById("post-title")
 let thread_chatbox = document.getElementById("chatbox-thread")
 let thread_title = document.getElementById("thread-title")
 
+
+hideUserPrompts()
+
+function hideUserPrompts() {
+    function reply(usernick) {
+        console.log(usernick.nickname)
+        if(usernick.nickname != "Guest") {
+            for(let i = 0; i < reply_prompt_shower.length; i++)
+                reply_prompt_shower[i].style.visibility = 'visible'
+        }
+    }
+
+    fetch("/user")
+        .then(response => response.json())
+        .then(usernick => reply(usernick))
+        .catch(error => {
+            console.error(error);
+        })
+}
 
 function showReplyPrompt() {
     reply_prompt.style.display = "flex";
@@ -33,7 +53,7 @@ function postThread() {
             message: thread_chatbox.value
         };
         postJSONToRoute("/postthread", thread_info);
-        setTimeout(window.location.reload(true), 3000)
+        setTimeout(function(){window.location.reload(true)}, 1800)
     }
 
 
@@ -60,7 +80,7 @@ function postReply() {
         };
         console.log(reply_chatbox.value)
         postJSONToRoute("/postpost", post_info);
-        setTimeout(window.location.reload(true), 3000)
+        setTimeout(function(){window.location.reload(true)}, 1800)
     }
 
 
